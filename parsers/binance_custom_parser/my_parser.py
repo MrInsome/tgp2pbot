@@ -61,20 +61,25 @@ async def testing_message(fiat, percentage, msg: types.Message):
     if resulteth < percentage:
         return
 
+    caption = f'<b>✅ Найдена новая сделка ✅\n\n</b>'\
+              f'🟢<b>{resulteth}%</b>\n'\
+              f'➖BNC ➖BNC(spot) ➖BNC\n'\
+              f'➖{p2pusdt_data["data"][0]["advertiser"]["nickName"]} '\
+              f'{p2pusdt_data["data"][0]["advertiser"]["monthOrderCount"]} '\
+              f'({int(round(float(p2pusdt_data["data"][0]["advertiser"]["monthFinishRate"]), 2) * 100)}%)'\
+              f'➖ {p2peth_data["data"][0]["advertiser"]["nickName"]} '\
+              f'{p2peth_data["data"][0]["advertiser"]["monthOrderCount"]} '\
+              f'({int(round(float(p2peth_data["data"][0]["advertiser"]["monthFinishRate"]), 2) * 100)}%)\n'\
+              f'➖{p2pusdt_data["data"][0]["adv"]["asset"]} за {p2pusdt_data["data"][0]["adv"]["price"]} '\
+              f'{p2pusdt_data["data"][0]["adv"]["fiatUnit"]}\n'\
+              f'➖Покупка спот {priceeth["symbol"]} за {round(float(priceeth["price"]), 2)}\n'\
+              f'➖Продажа {p2peth_data["data"][0]["adv"]["asset"]} за {p2peth_data["data"][0]["adv"]["price"]} ₽'
+
+    if msg.caption == caption:
+        return
+
     await msg.edit_caption(
-        f'<b>✅ Найдена новая сделка ✅\n\n</b>'
-        f'🟢<b>{resulteth}%</b>\n'
-        f'➖BNC ➖BNC(spot) ➖BNC\n'
-        f'➖{p2pusdt_data["data"][0]["advertiser"]["nickName"]} '
-        f'{p2pusdt_data["data"][0]["advertiser"]["monthOrderCount"]} '
-        f'({int(round(float(p2pusdt_data["data"][0]["advertiser"]["monthFinishRate"]), 2) * 100)}%)'
-        f'➖ {p2peth_data["data"][0]["advertiser"]["nickName"]} '
-        f'{p2peth_data["data"][0]["advertiser"]["monthOrderCount"]} '
-        f'({int(round(float(p2peth_data["data"][0]["advertiser"]["monthFinishRate"]), 2) * 100)}%)\n'
-        f'➖{p2pusdt_data["data"][0]["adv"]["asset"]} за {p2pusdt_data["data"][0]["adv"]["price"]} '
-        f'{p2pusdt_data["data"][0]["adv"]["fiatUnit"]}\n'
-        f'➖Покупка спот {priceeth["symbol"]} за {round(float(priceeth["price"]), 2)}\n'
-        f'➖Продажа {p2peth_data["data"][0]["adv"]["asset"]} за {p2peth_data["data"][0]["adv"]["price"]} ₽'
+        caption
         , parse_mode="HTML",
         reply_markup=InlineKeyboardMarkup(row_width=1).add(
             InlineKeyboardButton("Фильтр👁️‍🗨️", callback_data="filter"),

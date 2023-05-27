@@ -59,25 +59,29 @@ async def testing_message_g(fiat, percentage, msg: types.Message):
     resulteth = await calculate_gains(float(p2pethok), float(priceeth[0]['price']),
                                       float(p2pusdtok))
 
+    caption = f'<b>✅ Найдена новая сделка ✅\n\n</b>'\
+              f'🟢<b>{resulteth}%</b>\n'\
+              f'➖GRTX ➖GRTX(spot) ➖GRTX\n'\
+              f'➖{p2pusdt_data[0]["member"]} '\
+              f'➖ {p2peth_data[0]["member"]}\n '\
+              f'➖{p2pusdt_data[0]["currency"]} за {p2pusdt_data[0]["price"]} '\
+              f'{p2pusdt_data[0]["fiat_currency"]}\n'\
+              f'➖Покупка спот {priceeth[0]["market"]} за {round(float(priceeth[0]["price"]), 2)}\n'\
+              f'➖Продажа {p2peth_data[0]["currency"]} за {p2peth_data[0]["price"]} ₽'
+
     if resulteth < percentage:
         return
 
-    await msg.edit_caption(
-        f'<b>✅ Найдена новая сделка ✅\n\n</b>'
-        f'🟢<b>{resulteth}%</b>\n'
-        f'➖GRTX ➖GRTX(spot) ➖GRTX\n'
-        f'➖{p2pusdt_data[0]["member"]} '
-        f'➖ {p2peth_data[0]["member"]}\n '
-        f'➖{p2pusdt_data[0]["currency"]} за {p2pusdt_data[0]["price"]} '
-        f'{p2pusdt_data[0]["fiat_currency"]}\n'
-        f'➖Покупка спот {priceeth[0]["market"]} за {round(float(priceeth[0]["price"]), 2)}\n'
-        f'➖Продажа {p2peth_data[0]["currency"]} за {p2peth_data[0]["price"]} ₽'
-        , parse_mode="HTML",
-        reply_markup=InlineKeyboardMarkup(row_width=1).add(
-            InlineKeyboardButton("Фильтр👁️‍🗨️", callback_data="filter"),
-            InlineKeyboardButton("Эвакуация🆘", callback_data="evacuation"),
-            InlineKeyboardButton("Остановить оповещения🔴", callback_data="bot_stop"),
-        ))
+    if msg.caption == caption:
+        return
+
+    await msg.edit_caption(caption,
+                           parse_mode="HTML",
+                           reply_markup=InlineKeyboardMarkup(row_width=1).add(
+                               InlineKeyboardButton("Фильтр👁️‍🗨️", callback_data="filter"),
+                               InlineKeyboardButton("Эвакуация🆘", callback_data="evacuation"),
+                               InlineKeyboardButton("Остановить оповещения🔴", callback_data="bot_stop"),
+                           ))
 
 
 async def main():
