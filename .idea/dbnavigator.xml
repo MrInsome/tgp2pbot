@@ -12,7 +12,7 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="bd1aa1c5-228e-44e6-90fa-45d3e5796839">
+    <connection id="bb119d03-b02d-4491-8b72-0cee47ddb380">
       <console name="tgp2p" type="STANDARD" schema="main" session="Main" />
     </connection>
   </component>
@@ -21,15 +21,12 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
-      <object connection-id="bd1aa1c5-228e-44e6-90fa-45d3e5796839" object-ref="schemas/main/tables/profile" />
+      <object connection-id="bb119d03-b02d-4491-8b72-0cee47ddb380" object-ref="schemas/main/tables/profile" />
     </open-files>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="bd1aa1c5-228e-44e6-90fa-45d3e5796839" dataset="main.profile" active-filter-id="a5c318a2-7326-4b82-a6ae-2b93974295a7">
-      <filter id="a5c318a2-7326-4b82-a6ae-2b93974295a7" name=" &amp; " temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="user_id" operator="is not null" value="" active="true" />
-        <condition column="subscribe" operator="=" value="" active="true" />
-      </filter>
+    <filter-actions connection-id="bb119d03-b02d-4491-8b72-0cee47ddb380" dataset="main.profile" active-filter-id="7a43dbfd-9c9d-490e-b261-6b2570889e8c">
+      <filter id="7a43dbfd-9c9d-490e-b261-6b2570889e8c" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
     </filter-actions>
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
@@ -49,7 +46,7 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="bd1aa1c5-228e-44e6-90fa-45d3e5796839" active="true" signed="true">
+      <connection id="bb119d03-b02d-4491-8b72-0cee47ddb380" active="true" signed="true">
         <database>
           <name value="tgp2p" />
           <description value="" />

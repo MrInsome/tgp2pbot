@@ -75,13 +75,19 @@ async def testing_message_g(fiat, percentage, msg: types.Message):
     if msg.caption == caption:
         return
 
-    await msg.edit_caption(caption,
-                           parse_mode="HTML",
-                           reply_markup=InlineKeyboardMarkup(row_width=1).add(
-                               InlineKeyboardButton("Фильтр👁️‍🗨️", callback_data="filter"),
-                               InlineKeyboardButton("Эвакуация🆘", callback_data="evacuation"),
-                               InlineKeyboardButton("Остановить оповещения🔴", callback_data="bot_stop"),
-                           ))
+    try:
+        await msg.edit_caption(
+            caption,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(row_width=1).add(
+                InlineKeyboardButton("Фильтр👁️‍🗨️", callback_data="filter"),
+                InlineKeyboardButton("Эвакуация🆘", callback_data="evacuation"),
+                InlineKeyboardButton("Остановить оповещения🔴", callback_data="bot_stop"),
+            ))
+    except Exception as ex:
+        print(f'Smth went wrong\n: {ex.args}')
+        return
+
 
 
 async def main():
