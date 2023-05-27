@@ -51,7 +51,11 @@ async def support_action(query):
 #  Работа с Началом оповещений
 
 async def bot_start_action(query):
-    await query.message.edit_caption("Оповещения включены!", reply_markup=menu_kb_t)
+    await query.message.edit_caption(caption="Ожидание новой сделки...")
+    await query.message.answer_photo(photo=open("inner_files\\opener.png", "rb"),
+                                     caption=f'<em>Оповещения включены</em>!\n',
+                                     reply_markup=menu_kb_t,
+                                     parse_mode="HTML")
     stop_event.clear()
     while not stop_event.is_set():
         if stop_event.is_set():
@@ -85,9 +89,7 @@ async def evacuation_action(query):
 async def bot_stop_action(query):
     stop_event.set()
     name = query.from_user.username if query.from_user.username != "None" else query.from_user.first_name
-    await query.message.edit_caption(caption=f'<em>Добро пожаловать</em>, <b>{name}</b>!\n',
-                                     reply_markup=menu_kb_t,
-                                     parse_mode="HTML")
+    await query.message.delete()
 
 
 #  Возврат в главное меню
