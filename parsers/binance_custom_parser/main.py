@@ -1,5 +1,6 @@
 import os
 import time
+import operator
 
 import fake_useragent
 
@@ -89,7 +90,7 @@ class P2parser:
 
         for data in response_json:
             self.__result_exchange_rate.append([[data["adv"]["price"]], [
-                                               data["adv"]["minSingleTransAmount"]],
+                data["adv"]["minSingleTransAmount"]],
                                                 [data["adv"]["dynamicMaxSingleTransAmount"]]])
 
     def set_available_data(self, data, choice) -> None:
@@ -117,7 +118,7 @@ class P2parser:
             'https://p2p.binance.com/bapi/fiat/v1/public/fiatpayment/menu/currency', cookies=cookies, headers=headers)
         response_json = response.json()
 
-        favorite_currency = ["USD", "EUR", "UAH", "RUB", "JPY", "CNY", "GBP"]
+        favorite_currency = ["USD", "EUR", "RUB", "UAH", "JPY", "CNY", "GBP"]
         result_fiat = []
         temp = ""
 
@@ -141,7 +142,7 @@ class P2parser:
         return result_fiat
 
     @classmethod
-    def __list_with_data(cls, method, action="BUY", fiat="UAH", asset="USDT", bank="Monobank") -> list:
+    def __list_with_data(cls, method, action="BUY", fiat="RUB", asset="USDT", bank="RosBankNew") -> list:
         """method --> 'action', 'fiat', 'asset', 'bank', 'all'"""
 
         cls.method = method
@@ -163,8 +164,8 @@ class P2parser:
         json_data = {
             'proMerchantAds': False,
             'page': 1,
-            'rows': 10,
-            'payTypes': [cls.bank, ],
+            'rows': 5,
+            'payTypes': [],  # cls.bank,
             'countries': [],
             'publisherType': None,
             'asset': cls.asset,
@@ -174,7 +175,7 @@ class P2parser:
 
         if cls.method == "fiat":
             return [cookies, headers]
-        elif cls.method == "asset" or cls.method == "bank" or cls.method == "all":
+        elif cls.method == "asset" or cls.method == "bank" or cls.method == "all":  #
             return [cookies, headers, json_data]
         else:
             raise ValueError(
@@ -204,19 +205,19 @@ def write_available_chouice(select, available_data) -> None:
 
         for i in range(len(available_data["fiat"])):
             if i < 7:
-                print(f' {i+1}-{G + available_data["fiat"][i] + W}', end="  ")
+                print(f' {i + 1}-{G + available_data["fiat"][i] + W}', end="  ")
                 if i == 6:
                     print("\n" + (S_n + Bl) + "_" * 96)
             else:
                 print(
-                    f'{S_n + Bl}{i+1}-{G + available_data["fiat"][i]}', end=" ")
+                    f'{S_n + Bl}{i + 1}-{G + available_data["fiat"][i]}', end=" ")
 
         print("\n" + (W + S_b))
     if select == "asset":
         print("_" * 96 + "\n")
 
         for i in range(len(available_data["asset"])):
-            print(f' {i+1}-{G + available_data["asset"][i] + W}', end=" ")
+            print(f' {i + 1}-{G + available_data["asset"][i] + W}', end=" ")
 
         print("\n")
     if select == "bank":
@@ -231,12 +232,12 @@ def write_available_chouice(select, available_data) -> None:
         for i in range(len(available_data["bank"])):
 
             number_of_spaces = (
-                count_indent - len(available_data['bank'][index1]))
+                    count_indent - len(available_data['bank'][index1]))
 
             print(
-                f'{G_2} {W}{index1+1}-{G_2 + available_data["bank"][index1] + W}', end=(" " * number_of_spaces))
+                f'{G_2} {W}{index1 + 1}-{G_2 + available_data["bank"][index1] + W}', end=(" " * number_of_spaces))
             print(
-                f'{G_2} {W}{index2+1}-{G_2 + available_data["bank"][index2] + W}')
+                f'{G_2} {W}{index2 + 1}-{G_2 + available_data["bank"][index2] + W}')
 
             index1 += 2
             index2 += 2
@@ -286,7 +287,7 @@ def user_сhoice(available_data) -> None:
         write_available_chouice("fiat", available_data)
         try:
             select_fiat = int(input(" Select the fiat to be parsed: ")) - 1
-            if select_fiat <= len(available_data["fiat"])-1 and select_fiat >= 0:
+            if select_fiat <= len(available_data["fiat"]) - 1 and select_fiat >= 0:
                 break
             else:
                 print(f'{R} ERORR{W}')
@@ -305,7 +306,7 @@ def user_сhoice(available_data) -> None:
         write_available_chouice("asset", available_data)
         try:
             select_asset = int(input(" Select the asset to be parsed: ")) - 1
-            if select_asset <= len(available_data["asset"])-1 and select_asset >= 0:
+            if select_asset <= len(available_data["asset"]) - 1 and select_asset >= 0:
                 break
             else:
                 print(f'{R} ERORR{W}')
@@ -322,14 +323,14 @@ def user_сhoice(available_data) -> None:
         try:
             if for_check_on_digit == None:
                 select_bank = int(input(" Select the bank to be parsed: ")) - 1
-                if select_bank <= len(available_data["bank"])-1 and select_bank >= 0:
+                if select_bank <= len(available_data["bank"]) - 1 and select_bank >= 0:
                     break
                 else:
                     print(f'{R} ERORR{W}')
                     time.sleep(0.70)
             else:
                 select_bank = for_check_on_digit
-                if select_bank <= len(available_data["bank"])-1 and select_bank >= 0:
+                if select_bank <= len(available_data["bank"]) - 1 and select_bank >= 0:
                     break
                 else:
                     print(f'{R} ERORR{W}')
@@ -338,14 +339,12 @@ def user_сhoice(available_data) -> None:
             print(f'{R} ERORR{W}')
             time.sleep(0.70)
 
-    parsing.set_available_data("bank", available_data["bank"][select_bank])
+    parsing.set_available_data("bank", available_data["bank"][select_bank])  # available_data["bank"][select_bank]
 
 
 def print_offers(list_with_result, list_with_data) -> None:
-
     os.system('cls||clear')
-    print(f"{G}{S_b}\n\n  Loading...{W}\n\n")
-    time.sleep(0.80)
+    time.sleep(1)
     os.system('cls||clear')
 
     action = list_with_data["action"]
@@ -392,14 +391,39 @@ def print_offers(list_with_result, list_with_data) -> None:
     print(M + "\n" + "_" * 96 + W)
 
 
+def show_spread_info(spread_info):
+    spread_percentage = spread_info["spread_percentage"]
+    trade_type = spread_info["trade_type"]
+    exchange_info = spread_info["exchange_info"]
+    user_info = spread_info["user_info"]
+    asset_info = spread_info["asset_info"]
+    conversion_info = spread_info["conversion_info"]
+    payment_methods = spread_info["payment_methods"]
+    deposit_info = spread_info["deposit_info"]
+
+    print(f"Спред: {spread_percentage}% Тип торговли: {trade_type}\n")
+
+    print(f"Биржи: {exchange_info}\n")
+
+    print(f"Пользователь: {user_info}\n")
+
+    print(
+        f"Выполненные ордеры: {user_info['completed_orders']} Процент выполненных ордеров: {user_info['completed_orders_percentage']}%\n")
+
+    print(f"Активы: {asset_info}\n")
+
+    print(f"Стоимость активов: {conversion_info}\n")
+
+    print(f"Платежные методы: {payment_methods}\n")
+
+    print(f"Депозит: {deposit_info}\n")
+
+
 if __name__ == "__main__":
 
     cycle_menu = True
     while cycle_menu:
         os.system('cls||clear')
-
-        print(f'''{M}...
-    {W}''')
 
         parsing = P2parser()
 
@@ -408,6 +432,6 @@ if __name__ == "__main__":
         parsing.parsing_price()
 
         print_offers(parsing.get_result_parsing(),
-                     parsing.get_available_data())
+                     parsing.get_available_data(), )
 
         input(f'\n\n{R}  EXIT IN MENU {Bl}(type any key){W}')
