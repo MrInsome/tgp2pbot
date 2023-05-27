@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  webapp:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: tgp2pbot
+    command: python run.py
+    volumes:
+      - ./:/usr/src/tgp2pbot/

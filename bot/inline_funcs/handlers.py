@@ -21,7 +21,7 @@ async def bot_start(msg: types.Message):
     is_subscribed = bot.main.database.check_subscription(int(msg.from_user.id))
 
     if is_subscribed:
-        await msg.answer_photo(photo=open("inner_files\\opener.png", "rb"),
+        await msg.answer_photo(photo=open('inner_files/opener.png', "rb"),
                                caption=f'<em>Добро пожаловать</em>, <b>{name}</b>!\n',
                                reply_markup=menu_kb_t,
                                parse_mode="HTML")
