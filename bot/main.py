@@ -10,6 +10,8 @@ from bot.database.sql_base import TableUser
 from bot.handlers import register_all_handlers
 
 database = None
+bot = Bot(token=config.TOKEN, parse_mode="HTML")
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 async def __on_start_up(dp: Dispatcher) -> None:
@@ -19,8 +21,8 @@ async def __on_start_up(dp: Dispatcher) -> None:
 def start_bot():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
     global database
-    bot = Bot(token=config.TOKEN)
-    dp = Dispatcher(bot, storage=MemoryStorage())
+    global bot
+    global dp
     database = TableUser("database", "profile")
 
     executor.start_polling(dp, skip_updates=True, on_startup=__on_start_up)

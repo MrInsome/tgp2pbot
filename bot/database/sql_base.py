@@ -31,7 +31,8 @@ class TableUser(Database):
         tabel = f'''CREATE TABLE IF NOT EXISTS {self.name_table_user}(
             user_id INTEGER PRIMARY KEY,
             username TEXT,
-            bank TEXT,
+            spred_percent TEXT,
+            payment_methods TEXT,
             deposit TEXT,
             fiat TEXT,
             asset TEXT,
@@ -43,8 +44,8 @@ class TableUser(Database):
     def create_user(self, user_id: int, username: str):
         user = self.cursor.execute(f'SELECT 1 FROM {self.name_table_user} WHERE user_id == {user_id}').fetchone()
         if not user:
-            self.cursor.execute(f'INSERT INTO {self.name_table_user} VALUES(?, ?, ?, ?, ?, ?, ?)',
-                                (user_id, username, "empty", "empty", "empty", 0, 0))
+            self.cursor.execute(f'INSERT INTO {self.name_table_user} VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+                                (user_id, username, "0", "RosBankNew", "0", "RUB", "empty", 0))
             self.base.commit()
 
     def check_parameters(self, user_id: int, parameters: str) -> bool:
